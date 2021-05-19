@@ -1,9 +1,43 @@
 package dan.tp2021.productos.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+@Entity
 public class DetalleProvision {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //valor autonumerico
+	@Column(name="ID_DETALLE_PROVISION")
 	private Integer id;
+	
+	@OneToOne
+	@JoinColumn(name="ID_MATERIAL")
 	private Material material;
+	
 	private Integer cantidad;
+	
+	@ManyToOne
+	@JoinColumn(name="ID_PROVISION")
+	private Provision provision;
+
+	
+	
+	public DetalleProvision(Material material, Integer cantidad, Provision provision) {
+		super();
+		this.material = material;
+		this.cantidad = cantidad;
+		this.provision = provision;
+	}
+
+	public DetalleProvision() {
+		super();
+	}
 
 	public Integer getId() {
 		return id;
@@ -23,6 +57,14 @@ public class DetalleProvision {
 	}
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+
+	public Provision getProvision() {
+		return provision;
+	}
+
+	public void setProvision(Provision provision) {
+		this.provision = provision;
 	}
 	
 	
