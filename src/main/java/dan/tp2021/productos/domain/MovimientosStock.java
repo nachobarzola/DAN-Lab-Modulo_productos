@@ -9,8 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
 
 @Entity
 public class MovimientosStock {
@@ -19,14 +18,13 @@ public class MovimientosStock {
 	@Column(name="ID_MOVIMIENTO_STOCK")
 	private Integer id;
 	
+
 	@OneToOne
 	@JoinColumn(name="ID_DETALLE_PEDIDO")
-	@Column(name="DETALLE_PEDIDO")
 	private DetallePedido detallePedido;
 	
 	@OneToOne
-	@JoinColumn(name="ID_DETALLE_PEDIDO")
-	@Column(name="DETALLE_PROVISION")
+	@JoinColumn(name="ID_DETALLE_PROVISION")
 	private DetalleProvision detalleProvision;
 	
 	@OneToOne
@@ -39,7 +37,6 @@ public class MovimientosStock {
 	@Column(name="CANTIDAD_SALIDA")
 	private Integer cantidadSalida;
 	
-	@Temporal(TemporalType.DATE)
 	private Instant fecha;
 	
 	

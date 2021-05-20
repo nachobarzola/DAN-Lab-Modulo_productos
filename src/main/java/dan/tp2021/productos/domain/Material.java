@@ -38,6 +38,8 @@ public class Material {
 		this.unidad = unidad;
 	}
 	
+	
+	
 	public Material() {
 		super();
 	}
@@ -78,5 +80,15 @@ public class Material {
 	public void setStockMinimo(Integer stockMinimo) {
 		this.stockMinimo = stockMinimo;
 	}
+
+	public Unidad getUnidad() {
+		return unidad;
+	}
+
+	public void setUnidad(Unidad unidad) {
+		this.unidad = unidad;
+	}
+	
+	
 	
 }
