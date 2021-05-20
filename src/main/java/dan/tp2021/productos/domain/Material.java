@@ -88,6 +88,54 @@ public class Material {
 	public void setUnidad(Unidad unidad) {
 		this.unidad = unidad;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Material other = (Material) obj;
+		if (descripcion == null) {
+			if (other.descripcion != null)
+				return false;
+		} else if (!descripcion.equals(other.descripcion))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		if (precio == null) {
+			if (other.precio != null)
+				return false;
+		} else if (!precio.equals(other.precio))
+			return false;
+		if (stockActual == null) {
+			if (other.stockActual != null)
+				return false;
+		} else if (!stockActual.equals(other.stockActual))
+			return false;
+		if (stockMinimo == null) {
+			if (other.stockMinimo != null)
+				return false;
+		} else if (!stockMinimo.equals(other.stockMinimo))
+			return false;
+		if (unidad == null) {
+			if (other.unidad != null)
+				return false;
+		} else if (!unidad.equals(other.unidad))
+			return false;
+		return true;
+	}
+	
 	
 	
 	
