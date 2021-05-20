@@ -23,14 +23,14 @@ public class ProductoServiceImp implements ProductoService {
 
 	@Override
 	public Optional<Material> guardarProducto(Material producto) {
-
 		// Primeros guardamos la unidad
-		Unidad unidadGuardada = unidadRepo.save(producto.getUnidad());
-		if (unidadGuardada == null) {
-			// no se pudo guardar
+		Optional<Unidad> optUnidadGuardada = this.guardarUnidad(producto.getUnidad());
+		if(optUnidadGuardada.isEmpty()) {
 			return Optional.empty();
 		}
-		producto.setUnidad(unidadGuardada);
+		//Le asignamos la unidad al producto
+		producto.setUnidad(optUnidadGuardada.get());
+		//Guardamos el producto
 		producto = productoRepo.save(producto);
 		if (producto == null) {
 			// no se pudo guardar
@@ -38,6 +38,16 @@ public class ProductoServiceImp implements ProductoService {
 		}
 		return Optional.of(producto);
 	}
+	@Override
+	public Optional<Unidad> guardarUnidad(Unidad unidad) {
+		Unidad unidadGuardada = unidadRepo.save(unidad);
+		if (unidadGuardada == null) {
+			// no se pudo guardar
+			return Optional.empty();
+		}
+		return Optional.of(unidadGuardada);
+	}
+	
 
 	@Override
 	public Optional<Material> actualizarProducto(Material producto) {
@@ -74,6 +84,7 @@ public class ProductoServiceImp implements ProductoService {
 	public List<Material>  getProductoPorPrecio(Double precio) {
 		return productoRepo.findByPrecio(precio);
 	}
+
 	
 	
 	

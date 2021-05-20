@@ -9,6 +9,8 @@ import dan.tp2021.productos.domain.Unidad;
 public interface ProductoService {
 	public Optional<Material> guardarProducto(Material producto);
 	
+	public Optional<Unidad> guardarUnidad(Unidad unidad);
+	
 	public Optional<Material> actualizarProducto(Material producto);
 	
 	public Optional<Unidad> actualizarUnidad(Unidad unidad);
