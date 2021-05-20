@@ -50,15 +50,14 @@ public class ProductoRest {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Actualizado correctamente"),
 			@ApiResponse(code = 400, message = "No se pudo actualizar") })
 	public ResponseEntity<Material> actualizarProducto(@RequestBody Material producto) {
-		// Verificamos que tanto producto como unidad tengas sus ids
-		if (producto.getId() == null && producto.getUnidad().getId() == null) {
-			return ResponseEntity.badRequest().build();
-		}
 		// Verificamos que tenga la unidad
 		if (producto.getUnidad() == null) {
 			return ResponseEntity.badRequest().build();
 		}
-
+		// Verificamos que tanto producto como unidad tengas sus ids
+		if (producto.getId() == null || producto.getUnidad().getId() == null) {
+			return ResponseEntity.badRequest().build();
+		}
 		return ResponseEntity.of(productoService.actualizarProducto(producto));
 	}
 
@@ -69,7 +68,7 @@ public class ProductoRest {
 	}
 
 	@GetMapping(path = "/nombre")
-	@ApiOperation(value = "Permite obtener el producto dado su nombre como query string")
+	@ApiOperation(value = "Permite obtener el producto dado su nombre como query string. /nombre?nombreProducto=")
 	public ResponseEntity<Material> getProductoPorNombre(@RequestParam(required = true) String nombreProducto) {
 		return ResponseEntity.of(productoService.getProductoPorNombre(nombreProducto));
 	}
@@ -85,22 +84,22 @@ public class ProductoRest {
 		if ((rangoMin == null || rangoMax == null) && precio == null) {
 			return ResponseEntity.badRequest().build();
 		}
-		// Si se ingresa la dupla de busqueda por rango 
+		// Si se ingresa la dupla de busqueda por rango
 		else if (rangoMin != null && rangoMax != null && precio == null) {
 			respuesta1 = productoService.getProductoPorRangoStock(rangoMin, rangoMax);
 			return ResponseEntity.ok(respuesta1);
 
-		} //Si se ingresa solo el parametro de busqueda por precio
-		else if ((rangoMin == null || rangoMax == null) && precio != null) {
+		} // Si se ingresa solo el parametro de busqueda por precio
+		else if ((rangoMin == null && rangoMax == null) && precio != null) {
 			respuesta2 = productoService.getProductoPorPrecio(precio);
 			return ResponseEntity.ok(respuesta2);
-		} //Si se ingresan los tres parametros
+		} // Si se ingresan los tres parametros
 		else if (rangoMin != null && rangoMax != null && precio != null) {
 			System.out.println("Entro al if de los tres parametros ingresados\n");
 			List<Material> respuestaFinal = new ArrayList<>();
 			respuesta1 = productoService.getProductoPorRangoStock(rangoMin, rangoMax);
 			respuesta2 = productoService.getProductoPorPrecio(precio);
-		
+
 			// Obtenemos la intercepcion entre lista respuesta1 y respuesta2
 			for (Material unMaterial : respuesta1) {
 				if (respuesta2.contains(unMaterial)) {
@@ -109,10 +108,9 @@ public class ProductoRest {
 			}
 			return ResponseEntity.ok(respuestaFinal);
 
-		}
-		else {
+		} else {
 			return ResponseEntity.badRequest().build();
-		}	
+		}
 	}
 
 	@GetMapping(path = "/all")
