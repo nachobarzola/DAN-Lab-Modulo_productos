@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('clean') {
             when {
-                branch 'master'
+                branch 'main'
             }
             steps {
                 bat "java -version"
@@ -14,7 +14,7 @@ pipeline {
         }
         stage('clean-develop') {
             when {
-                branch 'develop'
+                branch 'Desarrollo'
             }
             steps {
                 bat "java -version"
