@@ -1,11 +1,7 @@
 package dan.tp2021.productos.rest;
 
-import javax.websocket.server.PathParam;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
