@@ -9,7 +9,14 @@ import dan.tp2021.productos.services.interfaces.ProductoService;
 import java.util.List;
 import java.util.Optional;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.TextMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.JmsException;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +27,9 @@ public class ProductoServiceImp implements ProductoService {
 
 	@Autowired
 	UnidadRepository unidadRepo;
+	
+	@Autowired
+	JmsTemplate jms; //jms: java message service
 
 	@Override
 	public Optional<Material> guardarProducto(Material producto) {
@@ -85,9 +95,16 @@ public class ProductoServiceImp implements ProductoService {
 		return productoRepo.findByPrecio(precio);
 	}
 
-	
-	
-	
+	@JmsListener(destination = "COLA_PEDIDOS")
+	public void recepcionPedidoColaPedidos(TextMessage msg) throws JmsException {
+		try {
+			System.out.println("Se recibio un mesaje!!!, mesanje: "+ msg.getText());
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	
 	
 }

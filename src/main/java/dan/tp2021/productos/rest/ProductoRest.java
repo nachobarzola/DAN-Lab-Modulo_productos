@@ -115,4 +115,6 @@ public class ProductoRest {
 		return ResponseEntity.ok(productoService.getAllProducto());
 	}
 
+	
+
 }
