@@ -1,15 +1,19 @@
 package dan.tp2021.productos.services;
 
 import dan.tp2021.productos.domain.Material;
+import dan.tp2021.productos.domain.MovimientosStock;
 import dan.tp2021.productos.domain.Unidad;
 import dan.tp2021.productos.services.dao.ProductoRepository;
 import dan.tp2021.productos.services.dao.UnidadRepository;
+import dan.tp2021.productos.services.interfaces.MovimientoStockService;
 import dan.tp2021.productos.services.interfaces.ProductoService;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 import javax.jms.JMSException;
+import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 
@@ -22,6 +26,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductoServiceImp implements ProductoService {
 
+	@Autowired
+	MovimientoStockService movimientoStockService;
+	
 	@Autowired
 	ProductoRepository productoRepo;
 
@@ -94,17 +101,30 @@ public class ProductoServiceImp implements ProductoService {
 	public List<Material>  getProductoPorPrecio(Double precio) {
 		return productoRepo.findByPrecio(precio);
 	}
+	
 
 	@JmsListener(destination = "COLA_PEDIDOS")
-	public void recepcionPedidoColaPedidos(TextMessage msg) throws JmsException {
+	public void recepcionPedidoColaPedidos(MapMessage msg) throws JmsException {
+		/*Cada vez que llegue un pedido a la cola de pedido, 
+		 * el microservicio de productos escuchará sobre dicha cola y 
+		 * se registra un movimiento de stock del producto y además 
+		 * actualizará el stock actual en la tabla de productos. 
+		 * Si se llegó a un stock debajo del mínimo se crea una 
+		 * nueva orden de provisión.
+		 */	
 		try {
-			System.out.println("Se recibio un mesaje!!!, mesanje: "+ msg.getText());
+			//Integer idPedido = msg.getInt("idPedido");
+			//No se como se mandara la fecha
+			//Double fechaPedido = msg.getDouble("fechaPedido");
+			Integer idDetallePedido= msg.getInt("idDetallePedido");
+			System.out.println("El id detalle pedido es: "+idDetallePedido);
+			//Registramos un movimiento de stock
+			//movimientoStockService.registrarMovimientoStock(idDetallePedido);
+			
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
-	
-	
 }

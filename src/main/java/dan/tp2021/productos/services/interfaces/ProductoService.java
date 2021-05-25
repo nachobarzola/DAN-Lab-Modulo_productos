@@ -1,9 +1,13 @@
 package dan.tp2021.productos.services.interfaces;
 
 import java.util.Optional;
+
+import javax.jms.MapMessage;
+
 import java.util.List;
 
 import dan.tp2021.productos.domain.Material;
+import dan.tp2021.productos.domain.MovimientosStock;
 import dan.tp2021.productos.domain.Unidad;
 
 public interface ProductoService {
@@ -24,6 +28,8 @@ public interface ProductoService {
 	public List<Material> getProductoPorPrecio(Double precio);
 	
 	public List<Material> getAllProducto();
+	
 
+	
 
 }
