@@ -60,7 +60,6 @@ class MoviemientosStockServiceImpTest {
 		detallePedidoRepo.deleteAll();
 		productoRepo.deleteAll();
 		unidadRepo.deleteAll();
-		System.out.println("Se borro todo");
 	}
 
 	@Test
