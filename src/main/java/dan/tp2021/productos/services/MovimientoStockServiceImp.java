@@ -60,6 +60,7 @@ public class MovimientoStockServiceImp implements MovimientoStockService {
 		//
 		movStockNuevo.setDetallePedido(detallePedido);
 		movStockNuevo.setCantidadSalida(detallePedido.getCantidad());
+		movStockNuevo.setCantidadEntrada(0);
 		Material producto = detallePedido.getMaterial();
 		movStockNuevo.setMaterial(producto);
 

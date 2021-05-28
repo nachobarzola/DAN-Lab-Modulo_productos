@@ -31,7 +31,9 @@ class ProductoServiceImpTest {
 
 	@BeforeEach
 	void limpiarRepositorios() {
+		
 		productoRepo.deleteAll();
+		unidadRepo.deleteAll();
 	}
 
 	@Test
@@ -246,5 +248,7 @@ class ProductoServiceImpTest {
 		assertTrue(listaProductoBuscado2.size() == 0);
 		
 	}
+	
+	
 
 }
