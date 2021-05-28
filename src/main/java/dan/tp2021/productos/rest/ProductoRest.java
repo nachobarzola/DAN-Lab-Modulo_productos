@@ -2,6 +2,8 @@ package dan.tp2021.productos.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import dan.tp2021.productos.domain.DetallePedido;
 import dan.tp2021.productos.domain.Material;
 import dan.tp2021.productos.services.interfaces.ProductoService;
 import io.swagger.annotations.ApiOperation;
@@ -55,6 +58,32 @@ public class ProductoRest {
 			return ResponseEntity.badRequest().build();
 		}
 		return ResponseEntity.of(productoService.actualizarProducto(producto));
+	}
+
+	@GetMapping(path = "/detallePedido")
+	@ApiOperation(value = "Permite consultar si hay stock dado una lista de detalles de pedido")
+	public ResponseEntity<?> getHayStockDisponible(@RequestBody List<DetallePedido> detalle) {
+
+		List<DetallePedido> listaDetalle = new ArrayList<DetallePedido>();
+		for (DetallePedido deta : detalle) {
+
+			Optional<Material> mat = productoService.getProducto(deta.getMaterial().getId());
+			if (mat.isPresent()) {
+				if (mat.get().getStockActual() >= deta.getCantidad()) {
+					listaDetalle.add(deta);
+				}
+
+			} else {
+				return ResponseEntity.notFound().build();
+			}
+		}
+
+		if (listaDetalle.size() == detalle.size()) {
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.badRequest().build();
+		}
+
 	}
 
 	@GetMapping(path = "/{id}")
@@ -114,7 +143,5 @@ public class ProductoRest {
 	public ResponseEntity<List<Material>> getProducto() {
 		return ResponseEntity.ok(productoService.getAllProducto());
 	}
-
-	
 
 }
