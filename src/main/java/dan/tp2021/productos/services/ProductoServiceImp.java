@@ -117,9 +117,9 @@ public class ProductoServiceImp implements ProductoService {
 			//No se como se mandara la fecha
 			//Double fechaPedido = msg.getDouble("fechaPedido");
 			Integer idDetallePedido= msg.getInt("idDetallePedido");
-			System.out.println("El id detalle pedido es: "+idDetallePedido);
+			//System.out.println("El id detalle pedido es: "+idDetallePedido);
 			//Registramos un movimiento de stock
-			//movimientoStockService.registrarMovimientoStock(idDetallePedido);
+			movimientoStockService.registrarMovimientoStock(idDetallePedido);
 			
 		} catch (JMSException e) {
 			e.printStackTrace();
