@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dan.tp2021.productos.domain.DetallePedido;
-import dan.tp2021.productos.domain.Material;
+import dan.tp2021.productos.domain.Producto;
 import dan.tp2021.productos.services.interfaces.ProductoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -35,7 +35,7 @@ public class ProductoRest {
 	@ApiOperation(value = "Permite crear un producto/material")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Guardado correctamente"),
 			@ApiResponse(code = 400, message = "No se pudo guardar") })
-	public ResponseEntity<Material> crearProducto(@RequestBody Material productoN) {
+	public ResponseEntity<Producto> crearProducto(@RequestBody Producto productoN) {
 		// Verificamos que tenga la unidad
 		if (productoN.getUnidad() == null) {
 			return ResponseEntity.badRequest().build();
@@ -48,7 +48,7 @@ public class ProductoRest {
 	@ApiOperation(value = "Permite actualizar un producto/material y tambien su unidad, los mismo deben tener sus ids en el body del json")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Actualizado correctamente"),
 			@ApiResponse(code = 400, message = "No se pudo actualizar") })
-	public ResponseEntity<Material> actualizarProducto(@RequestBody Material producto) {
+	public ResponseEntity<Producto> actualizarProducto(@RequestBody Producto producto) {
 		// Verificamos que tenga la unidad
 		if (producto.getUnidad() == null) {
 			return ResponseEntity.badRequest().build();
@@ -67,7 +67,7 @@ public class ProductoRest {
 		List<DetallePedido> listaDetalle = new ArrayList<DetallePedido>();
 		for (DetallePedido deta : detalle) {
 
-			Optional<Material> mat = productoService.getProducto(deta.getMaterial().getId());
+			Optional<Producto> mat = productoService.getProducto(deta.getProducto().getId());
 			if (mat.isPresent()) {
 				if (mat.get().getStockActual() >= deta.getCantidad()) {
 					listaDetalle.add(deta);
@@ -88,23 +88,23 @@ public class ProductoRest {
 
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Permite obtener un producto/material dada la id como variable de path.")
-	public ResponseEntity<Material> getProducto(@PathVariable Integer id) {
+	public ResponseEntity<Producto> getProducto(@PathVariable Integer id) {
 		return ResponseEntity.of(productoService.getProducto(id));
 	}
 
 	@GetMapping(path = "/nombre")
 	@ApiOperation(value = "Permite obtener el producto dado su nombre como query string. /nombre?nombreProducto=")
-	public ResponseEntity<Material> getProductoPorNombre(@RequestParam(required = true) String nombreProducto) {
+	public ResponseEntity<Producto> getProductoPorNombre(@RequestParam(required = true) String nombreProducto) {
 		return ResponseEntity.of(productoService.getProductoPorNombre(nombreProducto));
 	}
 
 	@GetMapping
 	@ApiOperation(value = "Permite obtener el producto dado su rango de stock o precio como query string")
-	public ResponseEntity<List<Material>> getProductoPorRangoOPrecio(@RequestParam(required = false) Integer rangoMin,
+	public ResponseEntity<List<Producto>> getProductoPorRangoOPrecio(@RequestParam(required = false) Integer rangoMin,
 			@RequestParam(required = false) Integer rangoMax, @RequestParam(required = false) Double precio) {
 
-		List<Material> respuesta1 = new ArrayList<>();
-		List<Material> respuesta2 = new ArrayList<>();
+		List<Producto> respuesta1 = new ArrayList<>();
+		List<Producto> respuesta2 = new ArrayList<>();
 		// No se ingresa ningun parametro
 		if ((rangoMin == null || rangoMax == null) && precio == null) {
 			return ResponseEntity.badRequest().build();
@@ -121,14 +121,14 @@ public class ProductoRest {
 		} // Si se ingresan los tres parametros
 		else if (rangoMin != null && rangoMax != null && precio != null) {
 			System.out.println("Entro al if de los tres parametros ingresados\n");
-			List<Material> respuestaFinal = new ArrayList<>();
+			List<Producto> respuestaFinal = new ArrayList<>();
 			respuesta1 = productoService.getProductoPorRangoStock(rangoMin, rangoMax);
 			respuesta2 = productoService.getProductoPorPrecio(precio);
 
 			// Obtenemos la intercepcion entre lista respuesta1 y respuesta2
-			for (Material unMaterial : respuesta1) {
-				if (respuesta2.contains(unMaterial)) {
-					respuestaFinal.add(unMaterial);
+			for (Producto unProducto : respuesta1) {
+				if (respuesta2.contains(unProducto)) {
+					respuestaFinal.add(unProducto);
 				}
 			}
 			return ResponseEntity.ok(respuestaFinal);
@@ -140,7 +140,7 @@ public class ProductoRest {
 
 	@GetMapping(path = "/all")
 	@ApiOperation(value = "Permite obtener todos los productos/materiales almacenados")
-	public ResponseEntity<List<Material>> getProducto() {
+	public ResponseEntity<List<Producto>> getProducto() {
 		return ResponseEntity.ok(productoService.getAllProducto());
 	}
 

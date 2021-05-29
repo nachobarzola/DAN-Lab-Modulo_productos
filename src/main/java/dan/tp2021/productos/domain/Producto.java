@@ -9,10 +9,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Material {
+public class Producto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //valor autonumerico
-	@Column(name="ID_MATERIAL")
+	@Column(name="ID_PRODUCTO")
 	private Integer id;
 	
 	private String nombre;
@@ -27,7 +27,7 @@ public class Material {
 	
 	
 	
-	public Material(String nombre, String descripcion, Double precio, Integer stockActual, Integer stockMinimo,
+	public Producto(String nombre, String descripcion, Double precio, Integer stockActual, Integer stockMinimo,
 			Unidad unidad) {
 		super();
 		this.nombre = nombre;
@@ -40,7 +40,7 @@ public class Material {
 	
 	
 	
-	public Material() {
+	public Producto() {
 		super();
 	}
 
@@ -97,7 +97,7 @@ public class Material {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Material other = (Material) obj;
+		Producto other = (Producto) obj;
 		if (descripcion == null) {
 			if (other.descripcion != null)
 				return false;

@@ -11,9 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import dan.tp2021.productos.domain.Material;
+import dan.tp2021.productos.domain.Producto;
 import dan.tp2021.productos.domain.Unidad;
+import dan.tp2021.productos.services.dao.DetallePedidoRepository;
+import dan.tp2021.productos.services.dao.DetalleProvisionRepository;
+import dan.tp2021.productos.services.dao.MovimientosStockRepository;
 import dan.tp2021.productos.services.dao.ProductoRepository;
+import dan.tp2021.productos.services.dao.ProvisionRepository;
 import dan.tp2021.productos.services.dao.UnidadRepository;
 import dan.tp2021.productos.services.interfaces.ProductoService;
 
@@ -28,17 +32,33 @@ class ProductoServiceImpTest {
 
 	@Autowired
 	UnidadRepository unidadRepo;
+	
+	@Autowired
+	MovimientosStockRepository movStockRepo;
+
+	@Autowired
+	DetalleProvisionRepository detalleProvisionRepo;
+
+	@Autowired
+	ProvisionRepository provisionRepo;
+
+	@Autowired
+	DetallePedidoRepository detallePedidoRepo;
+
 
 	@BeforeEach
-	void limpiarRepositorios() {
-		
+	void limpiarRepositorios() {	
+		movStockRepo.deleteAll();
+		detalleProvisionRepo.deleteAll();
+		provisionRepo.deleteAll();
+		detallePedidoRepo.deleteAll();
 		productoRepo.deleteAll();
 		unidadRepo.deleteAll();
 	}
 
 	@Test
 	void guardarProducto() {
-		Material producto1 = new Material();
+		Producto producto1 = new Producto();
 		producto1.setNombre("Marco de puertas");
 		producto1.setDescripcion("Son marcos de metal");
 		producto1.setPrecio(5000.0);
@@ -49,17 +69,17 @@ class ProductoServiceImpTest {
 		unidad1.setDescripcion("Enteros");
 		producto1.setUnidad(unidad1);
 		//
-		Optional<Material> optProducto = productoService.guardarProducto(producto1);
+		Optional<Producto> optProducto = productoService.guardarProducto(producto1);
 		// Verificamos que retorne algo
 		assertTrue(optProducto.isPresent());
 		// Verificamos que en verdad se guardo
-		Optional<Material> optProdReturn = productoRepo.findById(optProducto.get().getId());
+		Optional<Producto> optProdReturn = productoRepo.findById(optProducto.get().getId());
 		assertTrue(optProdReturn.isPresent());
 	}
 
 	@Test
 	void guardar_actualizar_producto() {
-		Material producto1 = new Material();
+		Producto producto1 = new Producto();
 		producto1.setNombre("Marco de puertas");
 		producto1.setDescripcion("Son marcos de metal");
 		producto1.setPrecio(5000.0);
@@ -70,16 +90,16 @@ class ProductoServiceImpTest {
 		unidad1.setDescripcion("Enteros");
 		producto1.setUnidad(unidad1);
 		//
-		Optional<Material> optProd = productoService.guardarProducto(producto1);
+		Optional<Producto> optProd = productoService.guardarProducto(producto1);
 		//
 		producto1.setPrecio(8000.0);
 		// Para que lo actualice debe tener el id
 		producto1.setId(optProd.get().getId());
 		// Actualizamos el producto
-		Optional<Material> optProdActRetur = productoService.actualizarProducto(producto1);
+		Optional<Producto> optProdActRetur = productoService.actualizarProducto(producto1);
 		assertTrue(optProdActRetur.isPresent());
 		// Lo buscamos en el repo tiene que haber cambiado su precio
-		Optional<Material> productoBuscado = productoRepo.findById(producto1.getId());
+		Optional<Producto> productoBuscado = productoRepo.findById(producto1.getId());
 		assertEquals(producto1.getPrecio(), productoBuscado.get().getPrecio());
 	}
 
@@ -118,7 +138,7 @@ class ProductoServiceImpTest {
 
 	@Test
 	void get_producto_Id() {
-		Material producto1 = new Material();
+		Producto producto1 = new Producto();
 		producto1.setNombre("Marco de puertas");
 		producto1.setDescripcion("Son marcos de metal");
 		producto1.setPrecio(5000.0);
@@ -129,16 +149,16 @@ class ProductoServiceImpTest {
 		unidad1.setDescripcion("Enteros");
 		producto1.setUnidad(unidad1);
 		//
-		Optional<Material> optProd = productoService.guardarProducto(producto1);
+		Optional<Producto> optProd = productoService.guardarProducto(producto1);
 		//
-		Optional<Material> optProdBuscado = productoService.getProducto(optProd.get().getId());
+		Optional<Producto> optProdBuscado = productoService.getProducto(optProd.get().getId());
 		assertTrue(optProdBuscado.isPresent());
 	}
 
 	@Test
 	void get_all_producto() {
 		// Producto 1-------------------------
-		Material producto1 = new Material();
+		Producto producto1 = new Producto();
 		producto1.setNombre("Marco de puertas");
 		producto1.setDescripcion("Son marcos de metal");
 		producto1.setPrecio(5000.0);
@@ -151,7 +171,7 @@ class ProductoServiceImpTest {
 		//
 		productoService.guardarProducto(producto1);
 		// Producto 2-------------------------
-		Material producto2 = new Material();
+		Producto producto2 = new Producto();
 		producto2.setNombre("Ventana");
 		producto2.setDescripcion("Ventana de metal");
 		producto2.setPrecio(7000.0);
@@ -164,7 +184,7 @@ class ProductoServiceImpTest {
 		//
 		productoService.guardarProducto(producto2);
 		// Producto 3-------------------------
-		Material producto3 = new Material();
+		Producto producto3 = new Producto();
 		producto3.setNombre("Piedras");
 		producto3.setDescripcion("Piedras de construccion");
 		producto3.setPrecio(500.0);
@@ -179,13 +199,13 @@ class ProductoServiceImpTest {
 		//----------------------------------
 		
 	
-		List<Material> listaProducto = productoService.getAllProducto();
+		List<Producto> listaProducto = productoService.getAllProducto();
 		assertTrue(listaProducto.size() == 3);
 	}
 	@Test
 	void get_producto_porNombre() {
 		// Producto 1-------------------------
-		Material producto1 = new Material();
+		Producto producto1 = new Producto();
 		producto1.setNombre("Marco de puertas");
 		producto1.setDescripcion("Son marcos de metal");
 		producto1.setPrecio(5000.0);
@@ -197,14 +217,14 @@ class ProductoServiceImpTest {
 		producto1.setUnidad(unidad1);
 		//
 		productoService.guardarProducto(producto1);
-		Optional<Material> optProductoBuscado = productoService.getProductoPorNombre(producto1.getNombre());
+		Optional<Producto> optProductoBuscado = productoService.getProductoPorNombre(producto1.getNombre());
 		assertTrue(optProductoBuscado.isPresent());
 		
 	}
 	@Test
 	void get_producto_porRangoStock() {
 		// Producto 1-------------------------
-		Material producto1 = new Material();
+		Producto producto1 = new Producto();
 		producto1.setNombre("Marco de puertas");
 		producto1.setDescripcion("Son marcos de metal");
 		producto1.setPrecio(5000.0);
@@ -217,10 +237,10 @@ class ProductoServiceImpTest {
 		//
 		productoService.guardarProducto(producto1);
 		//Busqueda con resultado
-		List<Material> listaProductoBuscado = productoService.getProductoPorRangoStock(40,60);
+		List<Producto> listaProductoBuscado = productoService.getProductoPorRangoStock(40,60);
 		assertTrue(listaProductoBuscado.size() > 0);
 		//Busqueda sin resultado
-		List<Material> listaProductoBuscado2 = productoService.getProductoPorRangoStock(60,100);
+		List<Producto> listaProductoBuscado2 = productoService.getProductoPorRangoStock(60,100);
 		assertTrue(listaProductoBuscado2.size() == 0);
 		
 		
@@ -228,7 +248,7 @@ class ProductoServiceImpTest {
 	@Test
 	void get_producto_porPrecio() {
 		// Producto 1-------------------------
-		Material producto1 = new Material();
+		Producto producto1 = new Producto();
 		producto1.setNombre("Marco de puertas");
 		producto1.setDescripcion("Son marcos de metal");
 		producto1.setPrecio(5000.0);
@@ -241,10 +261,10 @@ class ProductoServiceImpTest {
 		//
 		productoService.guardarProducto(producto1);
 		//Busqueda con resultado
-		List<Material> listaProductoBuscado = productoService.getProductoPorPrecio(5000.0);
+		List<Producto> listaProductoBuscado = productoService.getProductoPorPrecio(5000.0);
 		assertTrue(listaProductoBuscado.size() > 0);
 		//Busqueda sin resultado
-		List<Material> listaProductoBuscado2 = productoService.getProductoPorPrecio(40.0);
+		List<Producto> listaProductoBuscado2 = productoService.getProductoPorPrecio(40.0);
 		assertTrue(listaProductoBuscado2.size() == 0);
 		
 	}

@@ -17,8 +17,8 @@ public class DetalleProvision {
 	private Integer id;
 	
 	@OneToOne
-	@JoinColumn(name="ID_MATERIAL")
-	private Material material;
+	@JoinColumn(name="ID_PRODUCTO")
+	private Producto producto;
 	
 	private Integer cantidad;
 	
@@ -28,9 +28,9 @@ public class DetalleProvision {
 
 	
 	
-	public DetalleProvision(Material material, Integer cantidad, Provision provision) {
+	public DetalleProvision(Producto producto, Integer cantidad, Provision provision) {
 		super();
-		this.material = material;
+		this.producto = producto;
 		this.cantidad = cantidad;
 		this.provision = provision;
 	}
@@ -52,11 +52,11 @@ public class DetalleProvision {
 	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
 	}
-	public Material getMaterial() {
-		return material;
+	public Producto getProducto() {
+		return producto;
 	}
-	public void setMaterial(Material material) {
-		this.material = material;
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 
 	public Provision getProvision() {

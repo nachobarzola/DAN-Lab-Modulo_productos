@@ -6,28 +6,28 @@ import javax.jms.MapMessage;
 
 import java.util.List;
 
-import dan.tp2021.productos.domain.Material;
+import dan.tp2021.productos.domain.Producto;
 import dan.tp2021.productos.domain.MovimientosStock;
 import dan.tp2021.productos.domain.Unidad;
 
 public interface ProductoService {
-	public Optional<Material> guardarProducto(Material producto);
+	public Optional<Producto> guardarProducto(Producto producto);
 	
 	public Optional<Unidad> guardarUnidad(Unidad unidad);
 	
-	public Optional<Material> actualizarProducto(Material producto);
+	public Optional<Producto> actualizarProducto(Producto producto);
 	
 	public Optional<Unidad> actualizarUnidad(Unidad unidad);
 	
-	public Optional<Material> getProducto(Integer idProducto);
+	public Optional<Producto> getProducto(Integer idProducto);
 	
-	public Optional<Material> getProductoPorNombre(String nombreProducto);
+	public Optional<Producto> getProductoPorNombre(String nombreProducto);
 	
-	public List<Material> getProductoPorRangoStock(Integer rangoMin, Integer rangoMax);
+	public List<Producto> getProductoPorRangoStock(Integer rangoMin, Integer rangoMax);
 	
-	public List<Material> getProductoPorPrecio(Double precio);
+	public List<Producto> getProductoPorPrecio(Double precio);
 	
-	public List<Material> getAllProducto();
+	public List<Producto> getAllProducto();
 	
 
 	

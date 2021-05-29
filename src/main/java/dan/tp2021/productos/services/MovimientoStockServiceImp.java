@@ -1,8 +1,6 @@
 package dan.tp2021.productos.services;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,13 +10,12 @@ import org.springframework.stereotype.Service;
 
 import dan.tp2021.productos.domain.DetallePedido;
 import dan.tp2021.productos.domain.DetalleProvision;
-import dan.tp2021.productos.domain.Material;
+import dan.tp2021.productos.domain.Producto;
 import dan.tp2021.productos.domain.MovimientosStock;
 import dan.tp2021.productos.domain.Provision;
 import dan.tp2021.productos.services.dao.DetallePedidoRepository;
 import dan.tp2021.productos.services.dao.DetalleProvisionRepository;
 import dan.tp2021.productos.services.dao.MovimientosStockRepository;
-import dan.tp2021.productos.services.dao.ProductoRepository;
 import dan.tp2021.productos.services.dao.ProvisionRepository;
 import dan.tp2021.productos.services.interfaces.MovimientoStockService;
 import dan.tp2021.productos.services.interfaces.ProductoService;
@@ -61,8 +58,8 @@ public class MovimientoStockServiceImp implements MovimientoStockService {
 		movStockNuevo.setDetallePedido(detallePedido);
 		movStockNuevo.setCantidadSalida(detallePedido.getCantidad());
 		movStockNuevo.setCantidadEntrada(0);
-		Material producto = detallePedido.getMaterial();
-		movStockNuevo.setMaterial(producto);
+		Producto producto = detallePedido.getProducto();
+		movStockNuevo.setProducto(producto);
 
 		// Debemos generar una provision??
 		Integer stockLuegoDelPedido = producto.getStockActual() - detallePedido.getCantidad();
@@ -99,7 +96,7 @@ public class MovimientoStockServiceImp implements MovimientoStockService {
 		Integer cantidadProvision = calcularCantidadProvision(movStock);
 		//
 		detalleProvision.setCantidad(cantidadProvision);
-		detalleProvision.setMaterial(movStock.getMaterial());
+		detalleProvision.setProducto(movStock.getProducto());
 		List<DetalleProvision> listaDetalleProvision = new ArrayList<>();
 		listaDetalleProvision.add(detalleProvision);
 		provision.setDetalle(listaDetalleProvision); //TODO: no entiendo porque recibe una lista
@@ -131,9 +128,9 @@ public class MovimientoStockServiceImp implements MovimientoStockService {
 	}
 	
 	private Integer calcularMultiplosQOptiomo(MovimientosStock movStock, Integer multiploQOptiomo) {
-		Integer stockDespuesDeProvision = (movStock.getMaterial().getStockActual() 
+		Integer stockDespuesDeProvision = (movStock.getProducto().getStockActual() 
 				- movStock.getCantidadSalida()) + (multiploQOptiomo * Q_OPTIMO);
-		if(stockDespuesDeProvision > movStock.getMaterial().getStockMinimo()) {
+		if(stockDespuesDeProvision > movStock.getProducto().getStockMinimo()) {
 			return multiploQOptiomo;
 		}
 		else {

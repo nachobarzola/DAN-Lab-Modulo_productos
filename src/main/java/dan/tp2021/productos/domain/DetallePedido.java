@@ -20,16 +20,16 @@ public class DetallePedido {
 	private Integer id;
 	
 	@OneToOne
-	@JoinColumn(name="ID_MATERIAL")
-	private Material material;
+	@JoinColumn(name="ID_PRODUCTO")
+	private Producto producto;
 	
 	private Integer cantidad;
 
 	
 
-	public DetallePedido(Material material, Integer cantidad) {
+	public DetallePedido(Producto producto, Integer cantidad) {
 		super();
-		this.material = material;
+		this.producto = producto;
 		this.cantidad = cantidad;
 	}
 	
@@ -52,11 +52,11 @@ public class DetallePedido {
 	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
 	}
-	public Material getMaterial() {
-		return material;
+	public Producto getProducto() {
+		return producto;
 	}
-	public void setMaterial(Material material) {
-		this.material = material;
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 	
 	

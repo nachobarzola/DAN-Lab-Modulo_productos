@@ -1,6 +1,6 @@
 package dan.tp2021.productos.services;
 
-import dan.tp2021.productos.domain.Material;
+import dan.tp2021.productos.domain.Producto;
 import dan.tp2021.productos.domain.MovimientosStock;
 import dan.tp2021.productos.domain.Unidad;
 import dan.tp2021.productos.services.dao.ProductoRepository;
@@ -39,7 +39,7 @@ public class ProductoServiceImp implements ProductoService {
 	JmsTemplate jms; //jms: java message service
 
 	@Override
-	public Optional<Material> guardarProducto(Material producto) {
+	public Optional<Producto> guardarProducto(Producto producto) {
 		// Primeros guardamos la unidad
 		Optional<Unidad> optUnidadGuardada = this.guardarUnidad(producto.getUnidad());
 		if(optUnidadGuardada.isEmpty()) {
@@ -67,7 +67,7 @@ public class ProductoServiceImp implements ProductoService {
 	
 
 	@Override
-	public Optional<Material> actualizarProducto(Material producto) {
+	public Optional<Producto> actualizarProducto(Producto producto) {
 		actualizarUnidad(producto.getUnidad());
 		return Optional.of(productoRepo.save(producto));
 	}
@@ -78,27 +78,27 @@ public class ProductoServiceImp implements ProductoService {
 	}
 
 	@Override
-	public Optional<Material> getProducto(Integer idProducto) {
+	public Optional<Producto> getProducto(Integer idProducto) {
 		return productoRepo.findById(idProducto);
 	}
 
 	@Override
-	public List<Material> getAllProducto() {
+	public List<Producto> getAllProducto() {
 		return productoRepo.findAll();
 	}
 
 	@Override
-	public Optional<Material> getProductoPorNombre(String nombreProducto) {
+	public Optional<Producto> getProductoPorNombre(String nombreProducto) {
 		return productoRepo.findByNombre(nombreProducto);
 	}
 
 	@Override
-	public List<Material>  getProductoPorRangoStock(Integer rangoMin, Integer rangoMax) {
+	public List<Producto>  getProductoPorRangoStock(Integer rangoMin, Integer rangoMax) {
 		return productoRepo.findByStockActualBetween(rangoMin, rangoMax);
 	}
 
 	@Override
-	public List<Material>  getProductoPorPrecio(Double precio) {
+	public List<Producto>  getProductoPorPrecio(Double precio) {
 		return productoRepo.findByPrecio(precio);
 	}
 	

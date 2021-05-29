@@ -28,8 +28,8 @@ public class MovimientosStock {
 	private DetalleProvision detalleProvision;
 	
 	@OneToOne
-	@JoinColumn(name="ID_MATERIAL")
-	private Material material;
+	@JoinColumn(name="ID_PRODUCTO")
+	private Producto producto;
 	
 	@Column(name="CANTIDAD_ENTRADA")
 	private Integer cantidadEntrada;
@@ -41,12 +41,12 @@ public class MovimientosStock {
 	
 	
 	
-	public MovimientosStock(DetallePedido detallePedido, DetalleProvision detalleProvision, Material material,
+	public MovimientosStock(DetallePedido detallePedido, DetalleProvision detalleProvision, Producto producto,
 			Integer cantidadEntrada, Integer cantidadSalida, Instant fecha) {
 		super();
 		this.detallePedido = detallePedido;
 		this.detalleProvision = detalleProvision;
-		this.material = material;
+		this.producto = producto;
 		this.cantidadEntrada = cantidadEntrada;
 		this.cantidadSalida = cantidadSalida;
 		this.fecha = fecha;
@@ -74,11 +74,11 @@ public class MovimientosStock {
 	public void setDetalleProvision(DetalleProvision detalleProvision) {
 		this.detalleProvision = detalleProvision;
 	}
-	public Material getMaterial() {
-		return material;
+	public Producto getProducto() {
+		return producto;
 	}
-	public void setMaterial(Material material) {
-		this.material = material;
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 	public Integer getCantidadEntrada() {
 		return cantidadEntrada;
