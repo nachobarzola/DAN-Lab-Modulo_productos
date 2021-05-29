@@ -8,7 +8,10 @@ import dan.tp2021.productos.services.dao.UnidadRepository;
 import dan.tp2021.productos.services.interfaces.MovimientoStockService;
 import dan.tp2021.productos.services.interfaces.ProductoService;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.jms.JMSException;
@@ -113,10 +116,21 @@ public class ProductoServiceImp implements ProductoService {
 			//Integer idPedido = msg.getInt("idPedido");
 			//No se como se mandara la fecha
 			//Double fechaPedido = msg.getDouble("fechaPedido");
-			Integer idDetallePedido= msg.getInt("idDetallePedido");
+			//Integer idDetallePedido= msg.getInt("idDetallePedido");
 			//System.out.println("El id detalle pedido es: "+idDetallePedido);
 			//Registramos un movimiento de stock
-			movimientoStockService.registrarMovimientoStock(idDetallePedido);
+			//movimientoStockService.registrarMovimientoStock(idDetallePedido);
+			
+			
+			Integer cantidadDetalle = msg.getInt("cantidadDetalle");
+
+			for(int i=1;i<=cantidadDetalle;i++){
+			    Integer idDetallePedido = msg.getInt("idDetallePedido"+i);
+			    movimientoStockService.registrarMovimientoStock(idDetallePedido);
+
+			}
+	
+			
 			
 		} catch (JMSException e) {
 			e.printStackTrace();
