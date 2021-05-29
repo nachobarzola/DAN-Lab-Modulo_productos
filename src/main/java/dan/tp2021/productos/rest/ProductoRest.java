@@ -59,9 +59,9 @@ public class ProductoRest {
 		return ResponseEntity.of(productoService.actualizarProducto(producto));
 	}
 
-	@GetMapping(path = "/detallePedido")
+	@PostMapping(path = "/detallePedido")
 	@ApiOperation(value = "Permite consultar si hay stock dado una lista de detalles de pedido")
-	public ResponseEntity<?> getHayStockDisponible(@RequestBody List<DetallePedido> detalle) {
+	public ResponseEntity<Boolean> getHayStockDisponible(@RequestBody List<DetallePedido> detalle) {
 
 		List<DetallePedido> listaDetalle = new ArrayList<DetallePedido>();
 		for (DetallePedido deta : detalle) {
@@ -78,9 +78,9 @@ public class ProductoRest {
 		}
 
 		if (listaDetalle.size() == detalle.size()) {
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok(true);
 		} else {
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.ok(false);
 		}
 
 	}
