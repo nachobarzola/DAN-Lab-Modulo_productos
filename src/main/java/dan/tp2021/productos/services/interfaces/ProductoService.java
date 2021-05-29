@@ -2,12 +2,10 @@ package dan.tp2021.productos.services.interfaces;
 
 import java.util.Optional;
 
-import javax.jms.MapMessage;
 
 import java.util.List;
 
 import dan.tp2021.productos.domain.Producto;
-import dan.tp2021.productos.domain.MovimientosStock;
 import dan.tp2021.productos.domain.Unidad;
 
 public interface ProductoService {

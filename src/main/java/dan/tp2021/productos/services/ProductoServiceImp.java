@@ -1,21 +1,18 @@
 package dan.tp2021.productos.services;
 
 import dan.tp2021.productos.domain.Producto;
-import dan.tp2021.productos.domain.MovimientosStock;
+
 import dan.tp2021.productos.domain.Unidad;
 import dan.tp2021.productos.services.dao.ProductoRepository;
 import dan.tp2021.productos.services.dao.UnidadRepository;
 import dan.tp2021.productos.services.interfaces.MovimientoStockService;
 import dan.tp2021.productos.services.interfaces.ProductoService;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
-import javax.jms.Message;
-import javax.jms.TextMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;

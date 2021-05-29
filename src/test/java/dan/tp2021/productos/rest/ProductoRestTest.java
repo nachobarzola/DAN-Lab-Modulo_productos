@@ -2,8 +2,6 @@ package dan.tp2021.productos.rest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +15,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
 import dan.tp2021.productos.domain.Producto;
 import dan.tp2021.productos.domain.Unidad;
@@ -28,7 +25,6 @@ import dan.tp2021.productos.services.dao.UnidadRepository;
 class ProductoRestTest {
 
 	private String ENDPOINT_PRODUCTO = "/api/producto";
-	private RestTemplate restTemplate = new RestTemplate();
 
 	@Autowired
 	TestRestTemplate testRestTemplate;
