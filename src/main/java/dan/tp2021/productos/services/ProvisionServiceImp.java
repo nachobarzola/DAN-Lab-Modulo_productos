@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dan.tp2021.productos.domain.DetalleProvision;
 import dan.tp2021.productos.domain.MovimientosStock;
@@ -27,6 +28,7 @@ public class ProvisionServiceImp implements ProvisionService {
 	// Q_OPTIOMO es el tamaño del lote que se va a pedir provision
 	private final Integer Q_OPTIMO = 900; // Valor al azar
 
+	@Transactional
 	@Override
 	public Optional<Provision> generarOrdenDeProvision(List<DetalleProvision> listaDetalleProvision) {
 		Provision provision = new Provision();
@@ -54,6 +56,7 @@ public class ProvisionServiceImp implements ProvisionService {
 
 	}
 
+	@Transactional
 	@Override
 	public Optional<DetalleProvision> generarDetalleProvision(MovimientosStock movStock) {
 

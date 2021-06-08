@@ -24,6 +24,7 @@ import org.springframework.jms.JmsException;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductoServiceImp implements ProductoService {
@@ -40,6 +41,7 @@ public class ProductoServiceImp implements ProductoService {
 	@Autowired
 	JmsTemplate jms; //jms: java message service
 
+	@Transactional
 	@Override
 	public Optional<Producto> guardarProducto(Producto producto) {
 		// Primeros guardamos la unidad

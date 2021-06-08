@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dan.tp2021.productos.domain.DetallePedido;
 import dan.tp2021.productos.domain.DetalleProvision;
@@ -36,6 +37,7 @@ public class MovimientoStockServiceImp implements MovimientoStockService {
 	@Autowired
 	MovimientosStockRepository movimientoStockRepo;
 
+	@Transactional
 	@Override
 	public List<Optional<MovimientosStock>> registrarMovimientoStock(List<Integer> listaIdDetallePedido) {
 		List<DetalleProvision> listaDetalleProvision = new ArrayList<>();
