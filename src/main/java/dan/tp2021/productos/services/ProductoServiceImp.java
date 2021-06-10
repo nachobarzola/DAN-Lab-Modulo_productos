@@ -19,12 +19,15 @@ import java.util.Optional;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
 
 @Service
 public class ProductoServiceImp implements ProductoService {
@@ -51,22 +54,27 @@ public class ProductoServiceImp implements ProductoService {
 		}
 		//Le asignamos la unidad al producto
 		producto.setUnidad(optUnidadGuardada.get());
-		//Guardamos el producto
-		producto = productoRepo.save(producto);
-		if (producto == null) {
-			// no se pudo guardar
+		try {
+			//Guardamos el producto
+			producto = productoRepo.save(producto);
+			return Optional.of(producto);
+		} catch (Exception e) {
+			//e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return Optional.empty();
 		}
-		return Optional.of(producto);
 	}
 	@Override
 	public Optional<Unidad> guardarUnidad(Unidad unidad) {
-		Unidad unidadGuardada = unidadRepo.save(unidad);
-		if (unidadGuardada == null) {
-			// no se pudo guardar
+		Unidad unidadGuardada = null;
+		try {
+			unidadGuardada = unidadRepo.save(unidad);
+			return Optional.of(unidadGuardada);
+		} catch (Exception e) {
+			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return Optional.empty();
 		}
-		return Optional.of(unidadGuardada);
 	}
 	
 
