@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.annotation.Order;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
 import dan.tp2021.productos.domain.DetallePedido;
 import dan.tp2021.productos.domain.Producto;
@@ -27,6 +29,7 @@ import dan.tp2021.productos.services.dao.UnidadRepository;
 import dan.tp2021.productos.services.interfaces.MovimientoStockService;
 
 @SpringBootTest
+@ActiveProfiles("testing")
 class MoviemientosStockServiceImpTest {
 
 	@Autowired
@@ -51,7 +54,8 @@ class MoviemientosStockServiceImpTest {
 	@Autowired
 	UnidadRepository unidadRepo;
 
-	@BeforeEach
+	@Test
+	@Order(1)
 	void limpiarRepositorios() {
 		movStockRepo.deleteAll();
 		detalleProvisionRepo.deleteAll();
@@ -62,38 +66,29 @@ class MoviemientosStockServiceImpTest {
 	}
 
 	@Test
+	@Sql("/insert-data-testing1.sql")
 	void resgistrarMovimientoStock_sinGeneracionDeProvision() {
 		// Unidad
 		Unidad unidad1 = new Unidad("Entera");
-		unidadRepo.save(unidad1);
+		unidad1.setId(1);
+
 		// Producto 1
 		Producto producto1 = new Producto();
-		producto1.setDescripcion("Ladrillos Huecos");
-		producto1.setNombre("Ladrillos");
-		producto1.setPrecio(50.00);
-		producto1.setStockActual(1000);
-		producto1.setStockMinimo(200);
+		producto1.setId(1);
 		producto1.setUnidad(unidad1);
-		producto1 = productoRepo.save(producto1);
+
 		// Detalle pedido1
 		DetallePedido detallePedido1 = new DetallePedido();
+		detallePedido1.setId(1);
 		detallePedido1.setProducto(producto1);
-		detallePedido1.setCantidad(600);
-		detallePedido1 = detallePedidoRepo.save(detallePedido1);
 		// Producto 2
 		Producto producto2 = new Producto();
-		producto2.setDescripcion("Ventana de metal con vidrio en el centro");
-		producto2.setNombre("Ventana");
-		producto2.setPrecio(5000.00);
-		producto2.setStockActual(100);
-		producto2.setStockMinimo(5);
+		producto2.setId(2);
 		producto2.setUnidad(unidad1);
-		producto2 = productoRepo.save(producto2);
 		// Detalle pedido2
 		DetallePedido detallePedido2 = new DetallePedido();
 		detallePedido2.setProducto(producto2);
-		detallePedido2.setCantidad(50);
-		detallePedido2 = detallePedidoRepo.save(detallePedido2);
+		detallePedido2.setId(2);
 
 		// -------------------------------------------------------
 		List<Integer> listaIdDetallePedidoDelPedido = new ArrayList<>();
@@ -125,41 +120,36 @@ class MoviemientosStockServiceImpTest {
 		Optional<Producto> optProducto2 = productoRepo.findById(producto2.getId());
 		assertEquals(50, optProducto2.get().getStockActual());
 		assertEquals(5, optProducto2.get().getStockMinimo()); // no tiene que cambiar
+
+		// TODO: No se si es la forma correcta de hacerlo, pero con el beforceEach no
+		// anduvo.
+		limpiarRepositorios();
 	}
 
 	@Test
+	@Sql("/insert-data-testing2.sql")
 	void resgistrarMovimientoStock_conGeneracionDeProvision_enProducto1() {
 		// Unidad
 		Unidad unidad1 = new Unidad("Entera");
-		unidadRepo.save(unidad1);
-		// Producto
+		unidad1.setId(1);
+
+		// Producto 1
 		Producto producto1 = new Producto();
-		producto1.setDescripcion("Ladrillos Huecos");
-		producto1.setNombre("Ladrillos");
-		producto1.setPrecio(50.00);
-		producto1.setStockActual(1000);
-		producto1.setStockMinimo(200);
+		producto1.setId(1);
 		producto1.setUnidad(unidad1);
-		producto1 = productoRepo.save(producto1);
-		//
+
+		// Detalle pedido1
 		DetallePedido detallePedido1 = new DetallePedido();
+		detallePedido1.setId(1);
 		detallePedido1.setProducto(producto1);
-		detallePedido1.setCantidad(850);
-		detallePedido1 = detallePedidoRepo.save(detallePedido1);
 		// Producto 2
 		Producto producto2 = new Producto();
-		producto2.setDescripcion("Ventana de metal con vidrio en el centro");
-		producto2.setNombre("Ventana");
-		producto2.setPrecio(5000.00);
-		producto2.setStockActual(100);
-		producto2.setStockMinimo(5);
+		producto2.setId(2);
 		producto2.setUnidad(unidad1);
-		producto2 = productoRepo.save(producto2);
 		// Detalle pedido2
 		DetallePedido detallePedido2 = new DetallePedido();
 		detallePedido2.setProducto(producto2);
-		detallePedido2.setCantidad(50);
-		detallePedido2 = detallePedidoRepo.save(detallePedido2);
+		detallePedido2.setId(2);
 		// -------------------------------------------------------
 		List<Integer> listaIdDetallePedidoDelPedido = new ArrayList<>();
 		listaIdDetallePedidoDelPedido.add(detallePedido1.getId());
@@ -194,42 +184,37 @@ class MoviemientosStockServiceImpTest {
 		Optional<Producto> optProducto2 = productoRepo.findById(producto2.getId());
 		assertEquals(50, optProducto2.get().getStockActual());
 		assertEquals(5, optProducto2.get().getStockMinimo()); // no tiene que cambiar
-
+		
+		// TODO: No se si es la forma correcta de hacerlo, pero con el beforceEach no
+		// anduvo.
+		limpiarRepositorios();
 	}
 
 	@Test
+	@Sql("/insert-data-testing3.sql")
 	void resgistrarMovimientoStock_conGeneracionDeProvision_enAmbosProductos() {
 		// Unidad
 		Unidad unidad1 = new Unidad("Entera");
-		unidadRepo.save(unidad1);
-		// Producto
+		unidad1.setId(1);
+
+		// Producto 1
 		Producto producto1 = new Producto();
-		producto1.setDescripcion("Ladrillos Huecos");
-		producto1.setNombre("Ladrillos");
-		producto1.setPrecio(50.00);
-		producto1.setStockActual(1000);
-		producto1.setStockMinimo(200);
+		producto1.setId(1);
 		producto1.setUnidad(unidad1);
-		producto1 = productoRepo.save(producto1);
-		//
+
+		// Detalle pedido1
 		DetallePedido detallePedido1 = new DetallePedido();
+		detallePedido1.setId(1);
 		detallePedido1.setProducto(producto1);
-		detallePedido1.setCantidad(2000);
-		detallePedido1 = detallePedidoRepo.save(detallePedido1);
 		// Producto 2
 		Producto producto2 = new Producto();
-		producto2.setDescripcion("Ventana de metal con vidrio en el centro");
-		producto2.setNombre("Ventana");
-		producto2.setPrecio(5000.00);
-		producto2.setStockActual(100);
-		producto2.setStockMinimo(5);
+		producto2.setId(2);
 		producto2.setUnidad(unidad1);
-		producto2 = productoRepo.save(producto2);
 		// Detalle pedido2
 		DetallePedido detallePedido2 = new DetallePedido();
 		detallePedido2.setProducto(producto2);
-		detallePedido2.setCantidad(98);
-		detallePedido2 = detallePedidoRepo.save(detallePedido2);
+		detallePedido2.setId(2);
+
 		// -------------------------------------------------------
 		List<Integer> listaIdDetallePedidoDelPedido = new ArrayList<>();
 		listaIdDetallePedidoDelPedido.add(detallePedido1.getId());
@@ -268,7 +253,9 @@ class MoviemientosStockServiceImpTest {
 		Optional<Producto> optProducto2 = productoRepo.findById(producto2.getId());
 		assertEquals(902, optProducto2.get().getStockActual());
 		assertEquals(5, optProducto2.get().getStockMinimo()); // no tiene que cambiar
-
+		
+		//TODO: No se si es la forma correcta de hacerlo, pero con el beforceEach no anduvo.
+		limpiarRepositorios();
 	}
 
 }

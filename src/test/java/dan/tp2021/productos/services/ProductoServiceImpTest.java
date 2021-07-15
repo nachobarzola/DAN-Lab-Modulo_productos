@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import dan.tp2021.productos.domain.Producto;
 import dan.tp2021.productos.domain.Unidad;
@@ -21,6 +22,7 @@ import dan.tp2021.productos.services.dao.UnidadRepository;
 import dan.tp2021.productos.services.interfaces.ProductoService;
 
 @SpringBootTest
+@ActiveProfiles("testing")
 class ProductoServiceImpTest {
 
 	@Autowired

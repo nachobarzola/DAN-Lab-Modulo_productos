@@ -15,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 
 import dan.tp2021.productos.domain.Producto;
 import dan.tp2021.productos.domain.Unidad;
@@ -22,6 +23,7 @@ import dan.tp2021.productos.services.dao.ProductoRepository;
 import dan.tp2021.productos.services.dao.UnidadRepository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("testing")
 class ProductoRestTest {
 
 	private String ENDPOINT_PRODUCTO = "/api/producto";

@@ -1,0 +1,5 @@
+INSERT INTO UNIDAD VALUES (1, 'Enteras');
+INSERT INTO PRODUCTO VALUES (1,'Ladrillos Huecos', 'Ladrillos', 50.00, 1000, 200, 1);
+INSERT INTO PRODUCTO VALUES (2,'Ventana de metal con vidrio en el centro', 'Ventana', 5000.00, 100, 5, 1);
+INSERT INTO DETALLE_PEDIDO VALUES (1, 850, 1);
+INSERT INTO DETALLE_PEDIDO VALUES (2, 50, 2);
