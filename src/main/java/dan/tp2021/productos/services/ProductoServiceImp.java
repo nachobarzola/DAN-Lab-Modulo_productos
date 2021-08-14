@@ -1,6 +1,5 @@
 package dan.tp2021.productos.services;
 
-import dan.tp2021.productos.domain.DetalleProvision;
 import dan.tp2021.productos.domain.Producto;
 
 import dan.tp2021.productos.domain.Unidad;
@@ -10,10 +9,7 @@ import dan.tp2021.productos.services.interfaces.MovimientoStockService;
 import dan.tp2021.productos.services.interfaces.ProductoService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.jms.JMSException;
@@ -142,6 +138,7 @@ public class ProductoServiceImp implements ProductoService {
 			    listaIdDetallePedido.add(idDetallePedido);
 
 			}
+			System.out.println("Lei el pedido:"+cantidadDetalle);
 			  movimientoStockService.registrarMovimientoStock(listaIdDetallePedido);
 			
 			
